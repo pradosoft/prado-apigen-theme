@@ -1,0 +1,13 @@
+{
+	"name": "pradosoft/prado4-apigen-theme",
+	"description": "ApiGen theme for Prado4",
+	"homepage": "https://github.com/pradosoft/prado4-apigen-theme",
+	"license" : "BSD-3-Clause",
+	"authors": [
+		{
+			"name": "Fabio Bas",
+			"email": "ctrlaltca@gmail.com",
+			"role" : "Developer"
+		},	
+	]
+}
