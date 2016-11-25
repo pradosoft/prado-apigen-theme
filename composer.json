@@ -1,7 +1,7 @@
 {
-	"name": "pradosoft/prado4-apigen-theme",
-	"description": "ApiGen theme for Prado4",
-	"homepage": "https://github.com/pradosoft/prado4-apigen-theme",
+	"name": "pradosoft/prado-apigen-theme",
+	"description": "ApiGen theme for Prado4 documentation",
+	"homepage": "https://github.com/pradosoft/prado-apigen-theme",
 	"license" : "BSD-3-Clause",
 	"authors": [
 		{
