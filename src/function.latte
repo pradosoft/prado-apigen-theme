@@ -1,22 +1,22 @@
 {layout '@layout.latte'}
 {var $active = 'function'}
 
-{block title}{if $function->deprecated}Deprecated {/if}Function {$function->name}{/block}
+{block title}{if $function->isDeprecated()}Deprecated {/if}Function {$function->getName()}{/block}
 
 {block content}
 <div id="content" class="function">
-	<h1 n:class="$function->deprecated ? deprecated">Function {$function->shortName}</h1>
+	<h1 n:class="$function->isDeprecated() ? deprecated">Function {$function->getShortName()}</h1>
 
-	{if $function->valid}
+	{if $function->isValid()}
 
 	<div class="description" n:if="$template->longDescription($function)">
 	{$function|longDescription|noescape}
 	</div>
 
 	<div class="info">
-		{if $function->inNamespace()}<b>Namespace:</b> {$function->namespaceName|namespaceLinks|noescape}<br>{/if}
-		{if $function->inPackage()}<b>Package:</b> {$function->packageName|packageLinks|noescape}<br>{/if}
-		{foreach $template->annotationSort($template->annotationFilter($function->annotations, array('param', 'return', 'throws'))) as $annotation => $values}
+		{if $function->inNamespace()}<b>Namespace:</b> {$function->getNamespaceName()|namespaceLinks|noescape}<br>{/if}
+		{if $function->inPackage()}<b>Package:</b> {$function->getPackageName()|packageLinks|noescape}<br>{/if}
+		{foreach $template->annotationFilter($function->annotations, array('param', 'return', 'throws')) as $annotation => $values}
 			{foreach $values as $value}
 				<b>{$annotation|annotationBeautify}{if $value}:{/if}</b>
 				{$value|annotation:$annotation:$function|noescape}<br>
@@ -24,20 +24,20 @@
 		{/foreach}
 		<b>Located at</b>
 		<a n:tag-if="$config->sourceCode" href="{$function|sourceUrl}" title="Go to source code">
-			{$function->fileName|relativePath}
+			{$function->getFileName()|relativePath}
 		</a><br>
 	</div>
 
-	{var $annotations = $function->annotations}
+	{var $annotations = $function->getAnnotations()}
 
-	<table class="summary" id="parameters" n:if="count($function->parameters)">
+	<table class="summary" id="parameters" n:if="count($function->getParameters())">
 	<caption>Parameters summary</caption>
-	<tr n:foreach="$function->parameters as $parameter" id="${$parameter->name}">
-		<td class="name"><code>{$parameter->typeHint|typeLinks:$function|noescape}</code></td>
+	<tr n:foreach="$function->getParameters() as $parameter" id="${$parameter->getName()}">
+		<td class="name"><code>{$parameter->getTypeHint()|typeLinks:$function|noescape}</code></td>
 		<td class="value"><code>{block|strip}
-			<var>{if $parameter->passedByReference}&amp; {/if}${$parameter->name}</var>{if $parameter->defaultValueAvailable} = {$parameter->defaultValueDefinition|highlightPHP:$function|noescape}{elseif $parameter->unlimited},…{/if}
+			<var>{if $parameter->isPassedByReference()}&amp; {/if}${$parameter->getName()}</var>{if $parameter->isDefaultValueAvailable()} = {$parameter->getDefaultValueDefinition()|highlightPHP:$function|noescape}{elseif $parameter->isUnlimited()},…{/if}
 		{/block}</code></td>
-		<td>{$parameter->description|description:$function}</td>
+		<td>{$parameter->getDescription()|description:$function}</td>
 	</tr>
 	</table>
 
@@ -71,7 +71,7 @@
 				Documentation of this function could not be generated.
 			</p>
 			<p>
-				Function was originally declared in {$function->fileName|relativePath} and is invalid because of:
+				Function was originally declared in {$function->getFileName()|relativePath} and is invalid because of:
 			</p>
 			<ul>
 				<li n:foreach="$function->reasons as $reason">Function was redeclared in {$reason->getSender()->getFileName()|relativePath}.</li>
